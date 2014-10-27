@@ -2,7 +2,7 @@
 
 namespace DrupalRestWSAPI\classes\drupalorg;
 
-use DrupalRestWSAPI\interfaces\DrupalRestWSAPIInterface;
+use DrupalRestWSAPI\classes\DrupalRestWSAPI;
 
 /**
  * @file
@@ -10,6 +10,9 @@ use DrupalRestWSAPI\interfaces\DrupalRestWSAPIInterface;
  * @todo: provide a description.
  */
 
-class DrupalOrgRestWSAPI implements DrupalRestWSAPIInterface {
+class DrupalOrgRestWSAPI extends DrupalRestWSAPI {
 
+  public function request() {
+    $curl = curl_init();
+  }
 }

@@ -10,4 +10,8 @@ namespace DrupalRestWSAPI\interfaces;
 
 interface DrupalRestWSAPIInterface {
 
+  /**
+   * Makes a request to the service URL.
+   */
+  public function request();
 }
