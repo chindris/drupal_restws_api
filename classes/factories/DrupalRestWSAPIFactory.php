@@ -1,6 +1,10 @@
 <?php
 
-namespace DrupalRestWSAPI;
+namespace DrupalRestWSAPI\classes\factories;
+
+use DrupalRestWSAPI\interfaces\DrupalRestWSAPIResultParserInterface;
+
+use DrupalRestWSAPI\interfaces\DrupalRestWSAPIUrlBuilderInterface;
 
 use DrupalRestWSAPI\interfaces\DrupalRestWSAPIInterface;
 
@@ -22,7 +26,7 @@ class DrupalRestWSAPIFactory {
     // @todo: think of a better way of registering the default class. It would
     // be nice to have this somehow configurable and independent of the factory
     // class which should suffer as fewer changes as possible in the future.
-    $this->map['default'] = '\DrupalRestWSAPI\classes\drupalorg\DrupalOrgRestWSAPI';
+    $this->map['default'] = '\DrupalRestWSAPI\classes\DrupalRestWSAPI';
   }
 
   /**
@@ -81,7 +85,7 @@ class DrupalRestWSAPIFactory {
    * @return \DrupalRestWSAPI\interfaces\DrupalRestWSAPIInterface
    *  A concrete DrupalRestWSAPI object.
    */
-  public function getRestWSAPiObject($id = '', $params = array(), $force_create = FALSE) {
+  public function getRestWSAPiObject(DrupalRestWSAPIUrlBuilderInterface $url_builder, DrupalRestWSAPIResultParserInterface $result_parser, $id = '', $force_create = FALSE) {
     static $objects;
     $class_id = $id;
     if (empty($class_id)) {
@@ -102,7 +106,7 @@ class DrupalRestWSAPIFactory {
     // If we want to create a new one, we do it now, but we do not overwrite the
     // cache, unless the cache is empty.
     if (!empty($force_create)) {
-      $instance = new $this->map[$class_id]($params);
+      $instance = new $this->map[$class_id]($url_builder, $result_parser);
       // Store the new instance in the cache, but only if the cache is empty.
       if (empty($objects[$class_id])) {
         $objects[$class_id] = $instance;
@@ -112,7 +116,7 @@ class DrupalRestWSAPIFactory {
       // If we are here we try to find an object in the cache and return it.
       // Otherwise we create on and store it in the cache.
       if (empty($objects[$class_id])) {
-        $objects[$class_id] = new $this->map[$class_id]($params);
+        $objects[$class_id] = new $this->map[$class_id]($url_builder, $result_parser);
       }
       $instance = $objects[$class_id];
     }
