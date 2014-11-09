@@ -55,4 +55,22 @@ class DrupalRestWSAPI implements DrupalRestWSAPIInterface {
 
     return $this->parser->parse($response);
   }
+
+  /**
+   * (non-PHPdoc)
+   * @see \DrupalRestWSAPI\interfaces\DrupalRestWSAPIInterface::getEntity()
+   */
+  public function getEntity($entity_type, $entity_id) {
+    $this->query_builder->initializeEntityPath($entity_type, $entity_id);
+    return $this->request();
+  }
+
+  /**
+   * (non-PHPdoc)
+   * @see \DrupalRestWSAPI\interfaces\DrupalRestWSAPIInterface::getComments()
+   */
+  public function getEntities($entity_type, $params = array()) {
+    $this->query_builder->initializeEntitiesPath($entity_type, $params);
+    return $this->request();
+  }
 }
